@@ -6,8 +6,14 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 // 메모 목록 화면 클래스
-class MemoListViewModel {
+class MemoListViewModel: CommonViewModel {
+    // 테이블뷰와 바인딩 할 수 있는 속성
+    var memoList: Observable<[Memo]> {
+        return storage.memoList()
+    }
     
 }
