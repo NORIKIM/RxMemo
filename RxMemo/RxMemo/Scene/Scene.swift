@@ -28,16 +28,26 @@ extension Scene {
             guard var listVC = nav.viewControllers.first as? MemoListViewController else {
                 fatalError()
             }
-            listVC.bind(viewModel: memoListViewModel)
+            /*
+             앱을 실행하면 메모 목록 이라는 타이틀을 라지타이틀로 설정 했음에도 불구 하고 작게 나온다.
+             그 이유는 테이블뷰가 이른 시점에 바인딩 되기 때문
+             따라서 가장 간단히 바인딩 시점을 늦추면 해결 가능하다.
+             */
+            DispatchQueue.main.async {
+                listVC.bind(viewModel: memoListViewModel)
+            }
+            
             
             return nav
             
         case .detail(let memoDetailViewModel):
             // 메모 상세 보기 신
-            guard let detailVC = storyboard.instantiateViewController(withIdentifier: "DetailVC") as? MemoDetailViewController else {
+            guard var detailVC = storyboard.instantiateViewController(withIdentifier: "DetailVC") as? MemoDetailViewController else {
                 fatalError()
             }
-            detailVC.bind(viewModel: memoDetailViewModel)
+            DispatchQueue.main.async {
+                detailVC.bind(viewModel: memoDetailViewModel)
+            }
             
             return detailVC
             
@@ -49,7 +59,9 @@ extension Scene {
             guard var compseVC = nav.viewControllers.first as? MemoComposeViewController else {
                 fatalError()
             }
-            compseVC.bind(viewModel: memoComposeViewModel)
+            DispatchQueue.main.async {
+                compseVC.bind(viewModel: memoComposeViewModel)
+            }
             
             return nav
         }

@@ -13,10 +13,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        
+        // Main 스토리보드에서 이니셜뷰컨트롤러 화살표를 직접 메모네비게이션 컨트롤러로 이동하면 의존성 주입을 할 수 없으므로 이렇게 코드로 의존성을 주입해준다.
+        let storage = MemoryStorage()
+        let coordinator = SceneCoordinator(window: window!)
+        let listViewModel = MemoListViewModel(title: "나의 메모", sceneCoordinator: coordinator, storage: storage)
+        let listScene = Scene.list(listViewModel)
+        
+        coordinator.transition(to: listScene, usint: .root, animated: false)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
